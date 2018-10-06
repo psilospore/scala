@@ -1143,6 +1143,9 @@ abstract class ClassfileParser {
         (newStub(name.toTypeName), newStub(name.toTermName))
       } else {
         val cls = owner.newClass(name.toTypeName, NoPosition, sflags)
+        if (cls.isProtected) {
+          cls.privateWithin = cls.enclosingPackage
+        }
         val mod = owner.newModule(name.toTermName, NoPosition, sflags)
         val completer = new loaders.ClassfileLoader(file, cls, mod)
         cls setInfo completer
